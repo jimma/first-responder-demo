@@ -18,7 +18,7 @@ public class Disaster {
 
     // Set this in app.props to true if you are hitting the actual incidents/responders end points.
     // False would only show the data and not hit the end point.
-    @ConfigProperty(name = "sendRestToBackend")
+    @ConfigProperty(name = "sendtobackend")
     boolean send;
 
     // RestClient for the backend
@@ -61,7 +61,7 @@ public class Disaster {
 
     public Responder generateResponder() {
         Point2D.Double point = points.getInternalPoint();
-        return new Responder.Builder()
+        Responder responder = new Responder.Builder()
                 .name(fullNames.getNextFullName())
                 .phoneNumber(GeneratePhoneNumbers.getNextPhoneNumber())
                 .boatCapacity(biasedRandom(1, 12, 0.5))
@@ -72,10 +72,14 @@ public class Disaster {
                 .person(false)
                 .available(true)
                 .build();
+        if (send) {
+            this.backendService.createResponder(responder);
+        }
+        return responder;
     }
 
 
-    public List<Incident> generateIncidents(int number, boolean send){
+    public List<Incident> generateIncidents(int number){
         List<Incident> incidents = new ArrayList<Incident>(number);
         for(int i=0; i<number; i++)
             incidents.add(generateSingleIncident());
