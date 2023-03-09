@@ -2,8 +2,10 @@ embed-server --admin-only=true
 batch
 /extension=org.wildfly.extension.microprofile.reactive-messaging-smallrye:add
 /extension=org.wildfly.extension.microprofile.reactive-streams-operators-smallrye:add
+/extension=org.wildfly.extension.microprofile.openapi-smallrye:add
 /subsystem=microprofile-reactive-streams-operators-smallrye:add
 /subsystem=microprofile-reactive-messaging-smallrye:add
+/subsystem=microprofile-openapi-smallrye:add
 module add --name=org.postgres --resources=/app/postgresql-42.5.0.jar --dependencies=javax.api,javax.transaction.api
 /subsystem=datasources/jdbc-driver=postgres:add(driver-name="postgres",driver-module-name="org.postgres",driver-class-name=org.postgresql.Driver)
 data-source add --jndi-name=java:/FRDemoDS --name=FRDemoDS --connection-url=jdbc:postgresql://${env.DB_HOST}/${env.DB_NAME} --driver-name=postgres --user-name=${env.DB_USERNAME} --password=${env.DB_PASSWORD}
